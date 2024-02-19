@@ -6,8 +6,9 @@ public class Student extends SchoolParticipant{
     public Parent FirstParent;
     public Parent SecondParent;
     public ArrayList<SubjectStatistic> Subjects;
-    public Student(Person person, School.Position position, Parent firstParent, Parent secondParent) {
-        super(person, position);
+    public String ClassName = "";
+    public Student(SchoolParticipant participant, Parent firstParent, Parent secondParent) {
+        super(participant);
         FirstParent = firstParent;
         SecondParent = secondParent;
         Subjects = new ArrayList<>();

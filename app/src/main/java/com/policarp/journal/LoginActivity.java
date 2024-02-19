@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                s = school.toJson();
                back.putExtra(MainActivity.TAG, s);
                setResult(RESULT_OK, back);
-               Log.i("INFO", "Sent result");
+               finish();
            }catch (Exception ex){
                Log.e("EX",ex.getMessage());
            }

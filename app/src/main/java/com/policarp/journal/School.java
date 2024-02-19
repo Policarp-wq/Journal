@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class School {
     public final String Name;
@@ -46,10 +47,31 @@ public class School {
     private ArrayList<Teacher> Teachers;
     private ArrayList<Student> Students;
     private ArrayList<User> Users;
-    public void hireTeacher(Teacher teacher){
-        teacher.setCardID(generateID(teacher.Position));
+    private boolean hireTeacher(SchoolParticipant participant){
+        if(participant.Position != Position.Teacher)
+            return false;
+        Teacher teacher = new Teacher(participant, Subjects.Maths);
+        Random r = new Random();
+        Classes.add(new Class(Integer.toString(r.nextInt() % 11 + 1), teacher));
         Teachers.add(teacher);
+        return true;
     }
+    private boolean applyStudent(SchoolParticipant participant){
+        if(participant.Position != Position.Student)
+            return false;
+        Student s = new Student(participant,
+                new Parent("loh", ""),  new Parent("loh", ""));
+        for (Class c: Classes) {
+            if(c.getCount() < 30){
+                c.addStudent(s);
+                s.ClassName = c.Number;
+                break;
+            }
+        }
+        Students.add(s);
+        return true;
+    }
+
     public void addClass(Class c){
         Classes.add(c);
     }
@@ -62,6 +84,14 @@ public class School {
             position = Position.Guest;
         SchoolParticipant participant = new SchoolParticipant(p, generateID(position), position);
         SchoolParticipants.add(participant);
+        switch(participant.Position){
+            case Student:
+                applyStudent(participant);
+                break;
+            case Teacher:
+                hireTeacher(participant);
+                break;
+        }
         return participant;
     }
     public SchoolParticipant registerParticipant(String p){
@@ -125,5 +155,46 @@ public class School {
         Gson gson = builder.create();
         return gson.fromJson(json, School.class);
     }
+    public void updateParticipant(SchoolParticipant participant){
+        SchoolParticipant seeking = findParticipant(participant, SchoolParticipants);
+        if(seeking == null)
+            return;
+        SchoolParticipants.remove(seeking);
+        SchoolParticipants.add(participant);
+        switch(participant.Position){
+            case Student:
+                seeking = findParticipant(participant, Students);
+                if(seeking == null)
+                    applyStudent(participant);
+                else{
+                    Students.remove(seeking);
+                    Students.add((Student)participant);
+                }
+                break;
+            case Teacher:
+                seeking = findParticipant(participant, Teachers);
+                if(seeking == null)
+                    hireTeacher(participant);
+                else{
+                    Teachers.remove(seeking);
+                    Teachers.add((Teacher)participant);
+                }
+                break;
+        }
+        for(User u : Users){
+            if(participant.CardID.equals(u.participant.CardID)){
+                u.participant = participant;
+                break;
+            }
+        }
 
+    }
+    private <T extends SchoolParticipant> T findParticipant(SchoolParticipant participant, ArrayList<T> list){
+        for(T p : list){
+            if(participant.CardID.equals(p.CardID)){
+                return p;
+            }
+        }
+        return null;
+    }
 }

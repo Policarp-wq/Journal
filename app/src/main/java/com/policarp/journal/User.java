@@ -5,7 +5,7 @@ import java.util.Objects;
 public class User {
     public final String Login;
     public final int PasswordHash;
-    public final SchoolParticipant participant;
+    public SchoolParticipant participant;
 
     public User(String login, String password, SchoolParticipant participant) {
         Login = login;
