@@ -30,9 +30,11 @@ public class LoginActivity extends AppCompatActivity {
                Toast.makeText(this, "Создан новый аккаунт!", Toast.LENGTH_SHORT).show();
                participant = school.registerParticipant(login);
                school.registerUser(login, password, participant);
+               Log.i(MainActivity.APPTAG, "Registrated user" + participant.FullName);
            }
            else{
                Toast.makeText(this, "Авторизован", Toast.LENGTH_SHORT).show();
+               Log.i(MainActivity.APPTAG, "Authorized user" + participant.FullName);
            }
            try{
                Intent back = new Intent(LoginActivity.this, MainActivity.class);

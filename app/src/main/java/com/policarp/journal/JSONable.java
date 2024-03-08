@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class JSONable {
-    private static final GsonBuilder builder = new GsonBuilder();
-    private static final Gson gson = builder.create();
+    private static final Gson gson = new GsonBuilder().serializeNulls().create();
     public static Object fromJSON(String str, java.lang.Class c){
         if(c == null)
             return null;
