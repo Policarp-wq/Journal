@@ -38,12 +38,8 @@ public class LoginActivity extends AppCompatActivity {
            }
            try{
                Intent back = new Intent(LoginActivity.this, MainActivity.class);
-               GsonBuilder builder = new GsonBuilder();
-               Gson gson = builder.create();
                Log.i("INFO", "Sent result");
-               builder = new GsonBuilder();
-               gson = builder.create();
-               String s = gson.toJson(participant);
+               String s = JSONable.toJSON(participant);
                back.putExtra(LOGINEDPARTICIPANT, s);
                s = school.toJson();
                back.putExtra(MainActivity.TAG, s);

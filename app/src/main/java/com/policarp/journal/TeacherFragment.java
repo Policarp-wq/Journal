@@ -8,11 +8,10 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.policarp.journal.databinding.TeacherFragmentBinding;
 
-public class TeacherFragment extends Fragment{
+public class TeacherFragment extends FragmentDataSender{
     School school;
     Teacher teacher;
     public static final String SCHOOLARG = "SCHOOLARG";

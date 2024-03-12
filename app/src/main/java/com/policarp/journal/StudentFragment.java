@@ -2,7 +2,6 @@ package com.policarp.journal;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.policarp.journal.databinding.FragmentStudentBinding;
 
-public class StudentFragment extends Fragment {
+public class StudentFragment extends FragmentDataSender {
     FragmentStudentBinding binding;
     private static final String SCHOOLPARAM = "SCHOOL";
     private static final String STUDENTPARAM = "STUDENT";
@@ -20,16 +19,21 @@ public class StudentFragment extends Fragment {
 
     public School school;
     public Student student;
+    OnDataSendListener sendData;
 
     public StudentFragment() {
     }
 
-    public static StudentFragment newInstance(String school, String student) {
+    public static StudentFragment newInstance(String school, String student){
+        return newInstance(school, student, null);
+    }
+    public static StudentFragment newInstance(String school, String student, OnDataSendListener listener) {
         StudentFragment fragment = new StudentFragment();
         Bundle args = new Bundle();
         args.putString(SCHOOLPARAM, school);
         args.putString(STUDENTPARAM, student);
         fragment.setArguments(args);
+        fragment.sendData = listener;
         Log.i(MainActivity.APPTAG, "Created new instance of studentFragment");
         return fragment;
     }
@@ -56,6 +60,10 @@ public class StudentFragment extends Fragment {
         binding.subjects.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.subjects.setAdapter(adapter);
         binding.className.setText(student.AttachedClass);
+        Bundle b = new Bundle();
+        b.putString("lol", "sosi");
+        if(sendData != null)
+            sendData.sendData(b);
         Log.i(MainActivity.APPTAG, "Created view for student fragment");
         return binding.getRoot();
     }

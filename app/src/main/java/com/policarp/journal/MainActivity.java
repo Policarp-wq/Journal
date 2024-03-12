@@ -36,7 +36,18 @@ public class MainActivity extends AppCompatActivity {
         Log.i(APPTAG, "Created MainActivity");
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        init();
         setContentView(binding.getRoot());
+    }
+    void init(){
+        sharedPref = getSharedPreferences(TAG, MODE_PRIVATE);
+
+        school = (School)JSONable.fromJSON(sharedPref.getString(TAG, ""), School.class);
+        Log.i(APPTAG, "Got School JSON from sp");
+        if(school == null)
+            school = new School("Testin shit");
+        binding.SchoolName.setText("Профиль школы: " + school.Name);
+        fm = getSupportFragmentManager();
 
         positions = new ArrayList<>();
         for(School.Position pos : School.Position.values()){
@@ -58,19 +69,28 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Привязали группу к учатснику!", Toast.LENGTH_SHORT).show();
         });
 
-        fm = getSupportFragmentManager();
-        sharedPref = getSharedPreferences(TAG, MODE_PRIVATE);
-//        SharedPreferences.Editor a = sharedPref.edit();
-//        a.clear().commit();
-        school = (School)JSONable.fromJSON(sharedPref.getString(TAG, ""), School.class);
-        Log.i(APPTAG, "Got School JSON from sp");
-        if(school == null)
-            school = new School("Testin shit");
-        binding.SchoolName.setText(school.Name);
+        binding.exitProfile.setOnClickListener(v -> {
+            loginUser();
+        });
+
+        loginUser();
+    }
+    public void deleteCache(){
+        if(sharedPref != null)
+            sharedPref.edit().clear().apply();
+    }
+
+    public void loginUser(){
+        saveData();
         Intent login = new Intent(MainActivity.this, LoginActivity.class);
         login.putExtra(TAG, school.toJson());
         startActivityForResult(login, 1);
     }
+    public void saveData(){
+        sharedPref.edit().putString(TAG, school.toJson()).apply();
+        Log.i(APPTAG, "Saved data");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -121,8 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        sharedPref.edit().putString(TAG, school.toJson()).apply();
-        Log.i(APPTAG, "Saved data");
+        saveData();
         super.onStop();
     }
     public void disableSelection(){
