@@ -1,10 +1,8 @@
-package com.policarp.journal;
+package com.policarp.journal.models;
 
 import android.nfc.FormatException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class JournalRequest {
     public static ArrayList<Student> Students;

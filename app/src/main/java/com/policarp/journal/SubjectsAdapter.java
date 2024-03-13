@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.policarp.journal.databinding.OneSubjectBinding;
+import com.policarp.journal.models.SubjectStatistic;
 
 import java.util.ArrayList;
 

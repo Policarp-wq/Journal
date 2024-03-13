@@ -1,4 +1,4 @@
-package com.policarp.journal;
+package com.policarp.journal.models;
 
 import android.nfc.FormatException;
 

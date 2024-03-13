@@ -1,4 +1,4 @@
-package com.policarp.journal;
+package com.policarp.journal.models;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,16 +13,15 @@ public class School {
         Classes = new ArrayList<>();
         Teachers = new ArrayList<>();
         Students = new ArrayList<>();
-        Users = new ArrayList<>();
     }
 
-    public School(String name, ArrayList<SchoolParticipant> schoolParticipants, ArrayList<Class> classes, ArrayList<Teacher> teachers, ArrayList<Student> students, ArrayList<User> users) {
+    public School(String name, ArrayList<SchoolParticipant> schoolParticipants,
+                  ArrayList<Class> classes, ArrayList<Teacher> teachers, ArrayList<Student> students) {
         Name = name;
         SchoolParticipants = schoolParticipants;
         Classes = classes;
         Teachers = teachers;
         Students = students;
-        Users = users;
     }
 
     public enum Position {
@@ -44,7 +43,6 @@ public class School {
     private ArrayList<Class> Classes;
     private ArrayList<Teacher> Teachers;
     private ArrayList<Student> Students;
-    private ArrayList<User> Users;
     private Teacher hireTeacher(SchoolParticipant participant){
         if(participant.Position != Position.Teacher)
             return null;
@@ -86,10 +84,10 @@ public class School {
     public void addClass(String name, Teacher teacher){
         Classes.add(new Class(name, teacher));
     }
-    public SchoolParticipant registerParticipant(String p, Position position){
+    public SchoolParticipant registerParticipant(Person p, UserInfo u, Position position){
         if(position == null)
             position = Position.Guest;
-        SchoolParticipant participant = new SchoolParticipant(p, generateID(position), position);
+        SchoolParticipant participant = new SchoolParticipant(p, u, generateID(position), position);
         SchoolParticipants.add(participant);
         switch(participant.Position){
             case Student:
@@ -98,9 +96,6 @@ public class School {
                 return hireTeacher(participant);
         }
         return participant;
-    }
-    public SchoolParticipant registerParticipant(String p){
-        return registerParticipant(p, null);
     }
 
     private String generateID(Position position) {
@@ -134,16 +129,11 @@ public class School {
             builder.append("0");
         return builder.toString();
     }
-    public User registerUser(String login, String password, SchoolParticipant participant){
-        User user = new User(login,password,participant);
-        Users.add(user);
-        return user;
-    }
-    public SchoolParticipant getParticipant(String login, String password){
-        User seeking = new User(login, password, null);
-        for(User u : Users){
-            if(seeking.equals(u))
-                return u.participant;
+
+    public SchoolParticipant getParticipant(UserInfo u){
+        for(SchoolParticipant participant : SchoolParticipants){
+            if(participant.equals(u))
+                return participant;
         }
         return null;
     }
@@ -157,14 +147,14 @@ public class School {
         return (School)JSONable.fromJSON(json, School.class);
     }
     public SchoolParticipant updateParticipant(SchoolParticipant participant){
-        SchoolParticipant seeking = findParticipant(participant, SchoolParticipants);
+        SchoolParticipant seeking = findParticipant(participant.ID, SchoolParticipants);
         if(seeking == null)
             return null;
         SchoolParticipants.remove(seeking);
         SchoolParticipants.add(participant);
         switch(participant.Position){
             case Student:
-                seeking = findParticipant(participant, Students);
+                seeking = findParticipant(participant.ID, Students);
                 if(seeking == null)
                     participant = applyStudent(participant);
                 else{
@@ -173,7 +163,7 @@ public class School {
                 }
                 break;
             case Teacher:
-                seeking = findParticipant(participant, Teachers);
+                seeking = findParticipant(participant.ID, Teachers);
                 if(seeking == null)
                     participant = hireTeacher(participant);
                 else{
@@ -182,20 +172,28 @@ public class School {
                 }
                 break;
         }
-        for(User u : Users){
-            if(participant.CardID.equals(u.participant.CardID)){
-                u.participant = participant;
-                break;
-            }
-        }
         return participant;
     }
-    private <T extends SchoolParticipant> T findParticipant(SchoolParticipant participant, ArrayList<T> list){
+    private <T extends SchoolParticipant> T findParticipant(String ID, ArrayList<T> list){
         for(T p : list){
-            if(participant.CardID.equals(p.CardID)){
+            if(ID.equals(p.ID)){
                 return p;
             }
         }
         return null;
+    }
+    public boolean containsParticipant(SchoolParticipant participant){
+        for(SchoolParticipant p: SchoolParticipants){
+            if(participant.equals(p))
+                return true;
+        }
+        return false;
+    }
+    public boolean containsLogin(String login){
+        for(SchoolParticipant p: SchoolParticipants){
+            if(p.User != null && p.User.Login.equals(login))
+                return true;
+        }
+        return false;
     }
 }

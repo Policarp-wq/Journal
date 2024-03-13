@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.policarp.journal.databinding.TeacherFragmentBinding;
+import com.policarp.journal.models.Class;
+import com.policarp.journal.models.JSONable;
+import com.policarp.journal.models.School;
+import com.policarp.journal.models.Teacher;
 
 public class TeacherFragment extends FragmentDataSender{
     School school;
@@ -30,7 +34,7 @@ public class TeacherFragment extends FragmentDataSender{
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
             school = School.fromJson(getArguments().getString(SCHOOLARG));
-            teacher = (Teacher)JSONable.fromJSON(getArguments().getString(TEACHERARG), Teacher.class);
+            teacher = (Teacher) JSONable.fromJSON(getArguments().getString(TEACHERARG), Teacher.class);
         }
     }
 

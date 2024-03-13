@@ -2,7 +2,6 @@ package com.policarp.journal;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
@@ -10,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.policarp.journal.databinding.FragmentPrincipalBinding;
+import com.policarp.journal.models.School;
 
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class PrincipalFragment extends FragmentDataSender {

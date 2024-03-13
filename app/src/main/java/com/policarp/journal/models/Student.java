@@ -1,10 +1,10 @@
-package com.policarp.journal;
+package com.policarp.journal.models;
 
 import java.util.ArrayList;
 
 public class Student extends SchoolParticipant{
     public ArrayList<SubjectStatistic> Subjects;
-    String AttachedClass;
+    public String AttachedClass;
     public Student(SchoolParticipant participant) {
         super(participant);
         Subjects = SubjectStatistic.AvailableSubjects;

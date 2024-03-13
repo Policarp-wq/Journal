@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".RegisterFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Регистрация аккаунта"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <EditText
+            android:textSize="24sp"
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="Логин"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <EditText
+            android:textSize="24sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Пароль"
+            android:id="@+id/password"
+            android:gravity="center"
+            android:layout_margin="30dp"
+            android:layout_marginTop="28dp"/>
+        <EditText
+            android:textSize="24sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ФИО"
+            android:id="@+id/fullname"
+            android:gravity="center"
+            android:layout_margin="30dp"
+            android:layout_marginTop="28dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Выберите роль"
+            android:textStyle="italic"/>
+        <Spinner
+            android:id="@+id/roleSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <Button
+            android:id="@+id/createAcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Создать аккаунт"
+            android:layout_gravity="center_horizontal"
+            android:textSize="24sp"/>
+
+    </LinearLayout>
+
+</FrameLayout>

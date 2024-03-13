@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.policarp.journal.databinding.FragmentStudentBinding;
+import com.policarp.journal.models.JSONable;
+import com.policarp.journal.models.School;
+import com.policarp.journal.models.Student;
 
 public class StudentFragment extends FragmentDataSender {
     FragmentStudentBinding binding;
@@ -42,7 +45,7 @@ public class StudentFragment extends FragmentDataSender {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            school = (School)JSONable.fromJSON(getArguments().getString(SCHOOLPARAM), School.class);
+            school = (School) JSONable.fromJSON(getArguments().getString(SCHOOLPARAM), School.class);
             student = (Student) JSONable.fromJSON(getArguments().getString(STUDENTPARAM), Student.class);
             adapter = new SubjectsAdapter(student.Subjects);
             Log.i(MainActivity.APPTAG, "Got school and student info");
@@ -60,10 +63,6 @@ public class StudentFragment extends FragmentDataSender {
         binding.subjects.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.subjects.setAdapter(adapter);
         binding.className.setText(student.AttachedClass);
-        Bundle b = new Bundle();
-        b.putString("lol", "sosi");
-        if(sendData != null)
-            sendData.sendData(b);
         Log.i(MainActivity.APPTAG, "Created view for student fragment");
         return binding.getRoot();
     }

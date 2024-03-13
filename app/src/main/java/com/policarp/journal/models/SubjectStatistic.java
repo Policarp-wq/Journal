@@ -1,11 +1,6 @@
-package com.policarp.journal;
-
-import android.util.Log;
+package com.policarp.journal.models;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class SubjectStatistic {
     public static ArrayList<SubjectStatistic> AvailableSubjects = getAvailableSubjects();

@@ -12,12 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.policarp.journal.databinding.ActivityMainBinding;
+import com.policarp.journal.models.JSONable;
+import com.policarp.journal.models.School;
+import com.policarp.journal.models.SchoolParticipant;
+import com.policarp.journal.models.Student;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     void init(){
         sharedPref = getSharedPreferences(TAG, MODE_PRIVATE);
 
-        school = (School)JSONable.fromJSON(sharedPref.getString(TAG, ""), School.class);
+        school = (School) JSONable.fromJSON(sharedPref.getString(TAG, ""), School.class);
         Log.i(APPTAG, "Got School JSON from sp");
         if(school == null)
             school = new School("Testin shit");
@@ -133,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeFragment(Fragment fragment){
-        ft = fm.beginTransaction();
-        ft.add(binding.placeHolder.getId(), fragment);
-        ft.commit();
+        fm.beginTransaction()
+                .add(binding.placeHolder.getId(), fragment)
+                .commit();
         Log.i(APPTAG, "Changed fragment to");
     }
 

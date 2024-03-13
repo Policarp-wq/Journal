@@ -1,4 +1,4 @@
-package com.policarp.journal;
+package com.policarp.journal.models;
 
 public class Person {
     public String FullName;
