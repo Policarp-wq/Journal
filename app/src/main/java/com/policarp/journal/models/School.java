@@ -5,7 +5,9 @@ import java.util.Random;
 
 public class School {
     public final String Name;
+  //  public final SchoolParticipant SchoolPrincipal;
     public static final int CLASSCAPACITY = 1;
+    final static int IDlength = 7;
 
     public School(String name) {
         Name = name;
@@ -16,12 +18,13 @@ public class School {
     }
 
     public School(String name, ArrayList<SchoolParticipant> schoolParticipants,
-                  ArrayList<Class> classes, ArrayList<Teacher> teachers, ArrayList<Student> students) {
+                  ArrayList<Class> classes, ArrayList<Teacher> teachers, ArrayList<Student> students, SchoolParticipant principal) {
         Name = name;
         SchoolParticipants = schoolParticipants;
         Classes = classes;
         Teachers = teachers;
         Students = students;
+  //      SchoolPrincipal = principal;
     }
 
     public enum Position {
@@ -38,6 +41,13 @@ public class School {
         English,
         ICT,
         PE
+    }
+    public static ArrayList<SubjectStatistic> getAvailableSubjects(){
+        ArrayList<SubjectStatistic> sbj = new ArrayList<>();
+        for (School.Subjects s : School.Subjects.values()){
+            sbj.add(new SubjectStatistic(s));
+        }
+        return sbj;
     }
     private ArrayList<SchoolParticipant> SchoolParticipants;
     private ArrayList<Class> Classes;
@@ -99,7 +109,6 @@ public class School {
     }
 
     private String generateID(Position position) {
-        final int length = 7;
         String res = "";
         int arrSize = 0;
         if(position == Position.Principal){
@@ -118,21 +127,37 @@ public class School {
             res = "3";
             arrSize = SchoolParticipants.size();
         }
-        String additional = getAdditional(length, Integer.toString(arrSize).length() + 1);
+        String additional = getAdditional(IDlength, Integer.toString(arrSize).length() + 1);
         res += additional + arrSize;
         return res;
     }
 
-    private String getAdditional(int mxLength, int size) {
+    private static String getAdditional(int mxLength, int size) {
         StringBuilder builder = new StringBuilder();
         for(int i = size; i < mxLength; ++i)
             builder.append("0");
         return builder.toString();
     }
-
-    public SchoolParticipant getParticipant(UserInfo u){
+    public boolean containsUser(UserInfo info){
         for(SchoolParticipant participant : SchoolParticipants){
-            if(participant.equals(u))
+            if(info.equals(participant.User))
+                return true;
+        }
+        return false;
+    }
+    public SchoolParticipant getParticipant(String login){
+        //Пытаемся вернуть конкретный класс для позиции
+        for(SchoolParticipant participant : Teachers){
+            if(login.equals(participant.User.Login))
+                return participant;
+        }
+        for(SchoolParticipant participant : Students){
+            if(login.equals(participant.User.Login))
+                return participant;
+        }
+        //Если не нашли конкретный, то пытаемся хоть какой-то
+        for(SchoolParticipant participant : SchoolParticipants){
+            if(login.equals(participant.User.Login))
                 return participant;
         }
         return null;
@@ -146,7 +171,7 @@ public class School {
     public static School fromJson(String json){
         return (School)JSONable.fromJSON(json, School.class);
     }
-    public SchoolParticipant updateParticipant(SchoolParticipant participant){
+    private SchoolParticipant updateParticipant(SchoolParticipant participant){
         SchoolParticipant seeking = findParticipant(participant.ID, SchoolParticipants);
         if(seeking == null)
             return null;
@@ -196,4 +221,14 @@ public class School {
         }
         return false;
     }
+    public static Position getPositionFromString(String pos){
+        School.Position position = null;
+        for(School.Position p : School.Position.values()){
+            if(p.toString().equals(pos))
+                position = p;
+        }
+        return position;
+    }
+
+
 }

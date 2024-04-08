@@ -6,6 +6,7 @@ public class SchoolParticipant extends Person{
     public String ID;
     public School.Position Position;
     public UserInfo User;
+    public SchoolParticipant(){}
     public SchoolParticipant(Person person, UserInfo u, String ID, School.Position position) {
         super(person);
         User = u;

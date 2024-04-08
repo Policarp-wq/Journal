@@ -2,6 +2,7 @@ package com.policarp.journal.models;
 
 public class Person {
     public String FullName;
+    public Person(){}
     public Person(String fullName) {
         FullName = fullName;
     }

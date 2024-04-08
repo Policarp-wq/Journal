@@ -4,11 +4,14 @@ import java.util.Date;
 
 public class Mark {
     public int Value;
-    public Teacher Marker;
+    public String Marker;
     public Date MarkSetDate;
+    public Mark() {
+    }
+
     public Mark(int value, Teacher marker) {
         Value = value;
-        Marker = marker;
+        Marker = marker.FullName;
         MarkSetDate = new Date();
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "842233322534",
+    "project_id": "journal-487f6",
+    "storage_bucket": "journal-487f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842233322534:android:18e2f2d75084e0c6a49ae7",
+        "android_client_info": {
+          "package_name": "com.policarp.journal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP-t9PT74WTvktexPVzmzZnuDqBXiehDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

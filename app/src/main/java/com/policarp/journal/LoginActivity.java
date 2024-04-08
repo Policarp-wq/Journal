@@ -1,19 +1,18 @@
 package com.policarp.journal;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.policarp.journal.databinding.ActivityLoginBinding;
 import com.policarp.journal.models.JSONable;
 import com.policarp.journal.models.School;
 import com.policarp.journal.models.SchoolParticipant;
 import com.policarp.journal.models.Student;
+import com.policarp.journal.models.Teacher;
 import com.policarp.journal.models.UserInfo;
 
 public class LoginActivity extends AppCompatActivity {
@@ -21,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     School school;
     public static final String LOGINEDPARTICIPANT = "USER";
+    public static final String PARTICIPANTPOS = "POS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,23 +46,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void tryLogin(UserInfo u) {
-        SchoolParticipant participant = school.getParticipant(u);
-        Log.i("INFO", "Got participant");
-        if(participant == null){
+        if(!school.containsUser(u)){
             Toast.makeText(this, "Не найден аккаунт с таким логином и паролем!", Toast.LENGTH_SHORT).show();
             return;
         }
-        login(participant);
+        login(u);
     }
-    private void login(SchoolParticipant participant){
+    private void login(UserInfo u){
         Toast.makeText(this, "Авторизован", Toast.LENGTH_SHORT).show();
-        Log.i(MainActivity.APPTAG, "Authorized user" + participant.FullName);
+        Log.i(MainActivity.APPTAG, "Authorized user " + u.Login);
         Intent back = new Intent(LoginActivity.this, MainActivity.class);
         Log.i("INFO", "Sent result");
-        String s = JSONable.toJSON(participant);
-        back.putExtra(LOGINEDPARTICIPANT, s);
-        s = school.toJson();
-        back.putExtra(MainActivity.TAG, s);
+        back.putExtra(LOGINEDPARTICIPANT, u.Login);
+        //back.putExtra(PARTICIPANTPOS, participant.Position.toString());
+        back.putExtra(MainActivity.TAG, school.toJson());
         setResult(RESULT_OK, back);
         finish();
     }
@@ -81,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         SchoolParticipant p = school.registerParticipant(account.person, account.info, account.position);
-        login(p);
+        login(p.User);
     }
 
 }

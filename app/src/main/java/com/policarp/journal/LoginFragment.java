@@ -41,7 +41,8 @@ public class LoginFragment extends FragmentDataSender {
         binding.enter.setOnClickListener(v -> {
             if(listener == null)
                 return;
-            UserInfo u = new UserInfo(binding.login.toString(), binding.password.toString());
+            UserInfo u = new UserInfo(binding.login.getText().toString(),
+                    binding.password.getText().toString());
             EnterInfo info = new EnterInfo(u);
             Message msg = new Message();
             msg.obj = info;
