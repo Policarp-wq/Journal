@@ -1,13 +1,20 @@
 package com.policarp.journal.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class SchoolSubjectLine {
-    public School.Subjects Subject;
-    public String HomeWork;
-    public Mark Mark;
+    private School.Subjects subject;
+    private String homeWork;
+    private Mark mark;
 
     public SchoolSubjectLine(School.Subjects subject, String homeWork) {
-        Subject = subject;
-        HomeWork = homeWork;
+        this.subject = subject;
+        this.homeWork = homeWork;
     }
 
     public SchoolSubjectLine(School.Subjects subject) {

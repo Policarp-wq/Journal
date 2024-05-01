@@ -8,7 +8,14 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.policarp.journal.database.CustomCallBack;
+import com.policarp.journal.database.RequestError;
+import com.policarp.journal.database.ServerAPI;
+import com.policarp.journal.database.UserApi;
+import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
+import com.policarp.journal.database.response.entities.UserEntity;
 import com.policarp.journal.databinding.FragmentLoginBinding;
 import com.policarp.journal.models.UserInfo;
 
@@ -20,6 +27,7 @@ import com.policarp.journal.models.UserInfo;
 public class LoginFragment extends FragmentDataSender {
     FragmentLoginBinding binding;
     OnDataSendListener listener;
+    private UserApi userApi;
     public LoginFragment() {
     }
 
@@ -28,10 +36,13 @@ public class LoginFragment extends FragmentDataSender {
         fragment.listener = listener;
         return fragment;
     }
-
+    void showToast(String msg){
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userApi = ServerAPI.getInstance().getUserApi();
     }
 
     @Override
@@ -39,29 +50,28 @@ public class LoginFragment extends FragmentDataSender {
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         binding.enter.setOnClickListener(v -> {
-            if(listener == null)
-                return;
-            UserInfo u = new UserInfo(binding.login.getText().toString(),
+
+            UserEntity u = new UserEntity(binding.login.getText().toString(),
                     binding.password.getText().toString());
-            EnterInfo info = new EnterInfo(u);
-            Message msg = new Message();
-            msg.obj = info;
-            listener.sendMessage(msg);
+            tryLogin(u);
+
         });
-        /*binding.createAcc.setOnClickListener(v -> {
-            if(listener == null)
-                return;
-            EnterInfo info = new EnterInfo(null, true);
-            Message msg = new Message();
-            msg.obj = info;
-            listener.sendMessage(msg);
-        });*/
         return binding.getRoot();
     }
-    public static class EnterInfo{
-        UserInfo u;
-        public EnterInfo(UserInfo u) {
-            this.u = u;
-        }
+    private void tryLogin(UserEntity u) {
+        CustomCallBack<SchoolParticipantEntity> callBack = new CustomCallBack<>(
+                (call, response) -> {
+                    if(listener == null)
+                        return;
+                    Message msg = new Message();
+                    msg.obj = response.body().getParticipantId();
+                    listener.sendMessage(msg);
+                },
+                (c, r) ->{
+                    showToast(RequestError.handleBadResponse(r));
+                },
+                null
+        );
+        userApi.authUser(u).enqueue(callBack);
     }
 }

@@ -3,16 +3,16 @@ package com.policarp.journal.models;
 import java.util.Objects;
 
 public class UserInfo {
-    public String Login;
-    public int Hash;
+    public String login;
+    public int hash;
 
     public UserInfo(String login, int hash) {
-        Login = login;
-        Hash = hash;
+        this.login = login;
+        this.hash = hash;
     }
     public UserInfo(String login, String password) {
-        Login = login;
-        Hash = password.hashCode();
+        this.login = login;
+        hash = password.hashCode();
     }
 
     @Override
@@ -20,11 +20,11 @@ public class UserInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserInfo userInfo = (UserInfo) o;
-        return Hash == userInfo.Hash && Login.equals(userInfo.Login);
+        return hash == userInfo.hash && login.equals(userInfo.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Login, Hash);
+        return Objects.hash(login, hash);
     }
 }

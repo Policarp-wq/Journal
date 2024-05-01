@@ -2,16 +2,18 @@ package com.policarp.journal.models;
 
 import java.util.Date;
 
-public class Mark {
-    public int Value;
-    public String Marker;
-    public Date MarkSetDate;
-    public Mark() {
-    }
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Mark(int value, Teacher marker) {
-        Value = value;
-        Marker = marker.FullName;
-        MarkSetDate = new Date();
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+public class Mark {
+    private Long markId;
+    private String subjectName;
+    private Integer val;
+    private Integer studentId;
+    private Integer teacherId;
+    private Date markDate;
 }

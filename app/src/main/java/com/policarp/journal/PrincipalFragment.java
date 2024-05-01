@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.policarp.journal.databinding.FragmentPrincipalBinding;
-import com.policarp.journal.models.School;
+import com.policarp.journal.models.OldSchool;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class PrincipalFragment extends FragmentDataSender {
     FragmentPrincipalBinding binding;
     FragmentManager fm;
-    School school;
+    OldSchool oldSchool;
     private static final String SCHOOL = "school";
     OnDataSendListener listener;
     public static final Dictionary<String, Supplier> Actions = new Hashtable<String, Supplier>();
@@ -47,9 +47,9 @@ public class PrincipalFragment extends FragmentDataSender {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            school = School.fromJson(getArguments().getString(SCHOOL));
-        }
+//        if (getArguments() != null) {
+//            oldSchool = OldSchool.fromJson(getArguments().getString(SCHOOL));
+//        }
 
     }
 

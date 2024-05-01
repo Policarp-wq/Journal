@@ -10,13 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.policarp.journal.databinding.TeacherFragmentBinding;
-import com.policarp.journal.models.Class;
+import com.policarp.journal.models.LearningClass;
 import com.policarp.journal.models.JSONable;
-import com.policarp.journal.models.School;
+import com.policarp.journal.models.OldSchool;
 import com.policarp.journal.models.Teacher;
 
 public class TeacherFragment extends FragmentDataSender{
-    School school;
+    OldSchool oldSchool;
     Teacher teacher;
     public static final String SCHOOLARG = "SCHOOLARG";
     public static final String TEACHERARG = "TEACHERARG";
@@ -32,18 +32,18 @@ public class TeacherFragment extends FragmentDataSender{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
-            school = School.fromJson(getArguments().getString(SCHOOLARG));
-            teacher = (Teacher) JSONable.fromJSON(getArguments().getString(TEACHERARG), Teacher.class);
-        }
+//        if(getArguments() != null){
+//            oldSchool = OldSchool.fromJson(getArguments().getString(SCHOOLARG));
+//            teacher = (Teacher) JSONable.fromJSON(getArguments().getString(TEACHERARG), Teacher.class);
+//        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         TeacherFragmentBinding binding = TeacherFragmentBinding.inflate(inflater, container, false);
-        ArrayAdapter<Class> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, teacher.Classes);
-        binding.classes.setAdapter(adapter);
+//        ArrayAdapter<LearningClass> adapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, teacher.learningClasses);
+//        binding.learningClasses.setAdapter(adapter);
         return binding.getRoot();
     }
 }

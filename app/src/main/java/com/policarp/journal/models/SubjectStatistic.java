@@ -16,7 +16,7 @@ public class SubjectStatistic {
         int sm = 0;
         int cnt = 0;
         for (Mark mark: marks) {
-            sm += mark.Value;
+            sm += mark.getVal();
             ++cnt;
         }
         if(cnt == 0)
@@ -26,7 +26,7 @@ public class SubjectStatistic {
     public String getMarks(){
         StringBuilder sb = new StringBuilder();
         for(Mark m : marks){
-            sb.append(m.Value + " ");
+            sb.append(m.getVal() + " ");
         }
         return sb.toString();
     }

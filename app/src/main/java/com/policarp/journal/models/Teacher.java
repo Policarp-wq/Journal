@@ -13,9 +13,9 @@ public class Teacher extends SchoolParticipant{
     }
 
     public Teacher(SchoolParticipant participant, School.Subjects qualification) {
-        super(participant);
-        Classes = new ArrayList<>();
-        Qualification = qualification;
+//        super(participant);
+//        Classes = new ArrayList<>();
+//        Qualification = qualification;
     }
 
 
