@@ -1,4 +1,4 @@
-package com.policarp.journal;
+package com.policarp.journal.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.policarp.journal.R;
 import com.policarp.journal.databinding.OneSubjectBinding;
 import com.policarp.journal.models.SubjectStatistic;
 

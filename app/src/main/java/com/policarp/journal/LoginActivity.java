@@ -1,5 +1,6 @@
 package com.policarp.journal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isLogin = true;
     private ActivityLoginBinding binding;
     public static final String LOGINEDPARTICIPANTID = "USER";
+    public static final String SCHOOLID = "SCHOOL";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +25,14 @@ public class LoginActivity extends AppCompatActivity {
                 registerFragmentSelect();
             else loginFragmentSelect();
         });
-
+        if(getIntent().getBooleanExtra("LOGOFF", false)){
+            getPreferences(Context.MODE_PRIVATE).edit().remove(LoginFragment.PARTICIPANTID).apply();
+        }
         loginFragmentSelect();
     }
 
     private void loginFragmentSelect(){
-        LoginFragment frag = LoginFragment.newInstance((m) ->{
-            Long participantId = (Long)m.obj;
-            login(participantId);
-        });
+        LoginFragment frag = LoginFragment.newInstance((m) -> login((Long)m.obj));
         getSupportFragmentManager().beginTransaction().replace(binding.frame.getId(), frag).commit();
         binding.change.setText("Регистрация");
         isLogin = true;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registerFragmentSelect(){
         RegisterFragment registerFragment =
-                RegisterFragment.newInstance(m -> login((Long)m.obj));
+                RegisterFragment.newInstance(m -> login((Long) m.obj));
         getSupportFragmentManager().beginTransaction().replace(binding.frame.getId(), registerFragment).commit();
         binding.change.setText("Войти");
         isLogin = false;
@@ -48,10 +49,19 @@ public class LoginActivity extends AppCompatActivity {
     private void login(Long participantId){
         Toast.makeText(this, "Авторизован", Toast.LENGTH_SHORT).show();
         Log.i(MainActivity.APPTAG, "Authorized user with participant id" + participantId);
-        Intent back = new Intent(LoginActivity.this, MainActivity.class);
-        back.putExtra(LOGINEDPARTICIPANTID, participantId);
-        setResult(RESULT_OK, back);
+        Intent main = new Intent(LoginActivity.this, MainActivity.class);
+        main.putExtra(LOGINEDPARTICIPANTID, participantId);
+        startActivity(main);
         finish();
+    }
+    static class LoginInfo{
+        public LoginInfo(Long participantId, Long schoolId) {
+            this.participantId = participantId;
+            this.schoolId = schoolId;
+        }
+
+        public Long participantId;
+        public Long schoolId;
     }
 
 }

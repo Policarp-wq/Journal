@@ -50,6 +50,14 @@
             android:layout_gravity="center_horizontal"
             android:textSize="24sp"/>
 
+        <CheckBox
+            android:id="@+id/rememberAuth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Запомнить вход?"
+            android:textSize="18sp"
+            android:layout_margin="10dp"/>
+
     </LinearLayout>
 
 </FrameLayout>

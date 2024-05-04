@@ -5,79 +5,92 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RegisterFragment">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Регистрация аккаунта"
-            android:textSize="24sp"
-            android:layout_gravity="center_horizontal"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Регистрация аккаунта"
+                android:textSize="24sp"
+                android:layout_gravity="center_horizontal"/>
 
-        <EditText
-            android:textSize="20sp"
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginTop="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:hint="Логин"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-        <EditText
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Пароль"
-            android:id="@+id/password"
-            android:gravity="center"
-            android:layout_margin="10dp"/>
-        <EditText
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ФИО"
-            android:id="@+id/fullname"
-            android:gravity="center"
-            android:layout_margin="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Выберите школу"
-            android:textStyle="italic"/>
-        <Spinner
-            android:id="@+id/schoolSelector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </Spinner>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Выберите роль"
-            android:textStyle="italic"/>
-        <Spinner
-            android:id="@+id/roleSelector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </Spinner>
+            <EditText
+                android:textSize="20sp"
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:hint="Логин"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <EditText
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Пароль"
+                android:id="@+id/password"
+                android:gravity="center"
+                android:layout_margin="10dp"/>
+            <EditText
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ФИО"
+                android:id="@+id/fullname"
+                android:gravity="center"
+                android:layout_margin="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Выберите школу"
+                android:textStyle="italic"/>
+            <Spinner
+                android:id="@+id/schoolSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Выберите роль"
+                android:textStyle="italic"/>
+            <Spinner
+                android:id="@+id/roleSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+            <EditText
+                android:id="@+id/schoolCreationName"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Название школы"
+                android:gravity="center"
+                android:layout_margin="10dp"/>
+            <Button
+                android:id="@+id/createAcc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Создать аккаунт"
+                android:layout_gravity="center_horizontal"
+                android:textSize="24sp"/>
 
-        <Button
-            android:id="@+id/createAcc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Создать аккаунт"
-            android:layout_gravity="center_horizontal"
-            android:textSize="24sp"/>
 
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
 
 </FrameLayout>

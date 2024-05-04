@@ -1,5 +1,6 @@
 package com.policarp.journal.database.response.entities;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

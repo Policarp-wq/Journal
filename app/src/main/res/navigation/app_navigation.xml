@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/teacherFragment">
+    <fragment
+        android:id="@+id/classFragment"
+        android:name="com.policarp.journal.ClassFragment"
+        android:label="fragment_class"
+        tools:layout="@layout/fragment_class" >
+        <argument
+            android:name="classid"
+            app:argType="long"
+            android:defaultValue="1L" />
+    </fragment>
+    <fragment
+        android:id="@+id/teacherFragment"
+        android:name="com.policarp.journal.TeacherFragment"
+        android:label="TeacherFragment" >
+        <action
+            android:id="@+id/action_teacherFragment2_to_classFragment"
+            app:destination="@id/classFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentFragment"
+        android:name="com.policarp.journal.StudentFragment"
+        android:label="fragment_student"
+        tools:layout="@layout/fragment_student" />
+</navigation>

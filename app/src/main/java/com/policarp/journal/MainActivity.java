@@ -1,113 +1,116 @@
 package com.policarp.journal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.navigation.NavigationView;
 import com.policarp.journal.database.CustomCallBack;
+import com.policarp.journal.database.SchoolApi;
 import com.policarp.journal.database.SchoolParticipantApi;
 import com.policarp.journal.database.ServerAPI;
+import com.policarp.journal.database.response.entities.SchoolEntity;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
 import com.policarp.journal.databinding.ActivityMainBinding;
 import com.policarp.journal.models.School;
 
 public class MainActivity extends AppCompatActivity {
     public static final String APPTAG = "JOURNALTAG";
-    public static final String GO_TO_MARKS = "Перейти к оценкам";
     FragmentManager fm;
     SchoolParticipantEntity current;
     ActivityMainBinding binding;
     SchoolParticipantApi participantApi;
+    SchoolApi schoolApi;
     public static final String TAG = "SchoolData";
+    private SchoolEntity school;
+    NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(APPTAG, "Created MainActivity");
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         participantApi = ServerAPI.getInstance().getSchoolParticipantApi();
-        init();
+        schoolApi = ServerAPI.getInstance().getSchoolApi();
         setContentView(binding.getRoot());
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        init();
     }
     void init(){
-//        sharedPref = getSharedPreferences(TAG, MODE_PRIVATE);
-//        oldSchool = (OldSchool) JSONable.fromJSON(sharedPref.getString(TAG, ""), OldSchool.class);
-////        dba.addSchoolParticipant(school,
-////                new SchoolParticipant(new Person("Check"), new UserInfo("pidor", "pidor"),
-////                        "13", School.Position.Student));
-//        Log.i(APPTAG, "Got School JSON from sp");
-////        if(oldSchool == null)
-////            oldSchool = new OldSchool("Testin shit");
-//        binding.SchoolName.setText("Профиль школы: " + oldSchool.name);
-//        binding.deleteData.setOnClickListener(v -> deleteCache());
-//        fm = getSupportFragmentManager();
-//        binding.exitProfile.setOnClickListener(v -> loginUser());
-        loginUser();
+        Long participantId = getIntent().getLongExtra(LoginActivity.LOGINEDPARTICIPANTID, -1);
+        if(participantId == -1){
+            showToast("Wrong participant id, restart the app");
+            return;
+        }
+        CustomCallBack<SchoolEntity> schoolCallBack = new CustomCallBack<>(
+                (c, r)->{
+                    school = r.body();
+                    binding.SchoolName.setText(school.getName());
+                    onGotCurrentUser();
+                },null,null
+        );
+        CustomCallBack<SchoolParticipantEntity> callBack = new CustomCallBack<>(
+                (c, r)->{
+                    current = r.body();
+                    schoolApi.getSchoolById(current.getSchoolId()).enqueue(schoolCallBack);
+                    binding.Name.setText(current.getName());
+                },
+                null,null
+        );
+        participantApi.getById(participantId).enqueue(callBack);
+        fm = getSupportFragmentManager();
+        initSideBar();
+        //navController = Navigation.findNavController(this, R.id.fragmentContainerView);
     }
     void showToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-
-    public void loginUser() {
-        Intent login = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(login, 1);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            Log.i("INFO", "Got result from login");
-            Long participantId = data.getLongExtra(LoginActivity.LOGINEDPARTICIPANTID, -1);
-            if(participantId == -1){
-                showToast("Wrong participant id, restart the app");
-                return;
-            }
-            CustomCallBack<SchoolParticipantEntity> callBack = new CustomCallBack<>(
-                    (c, r)->{
-                        current = r.body();
-                        onGotCurrentUser();
-                        binding.Name.setText(current.getName());
-                    },
-                    null,null
-            );
-            participantApi.getById(participantId).enqueue(callBack);
-
-//
-        }
-    }
-
     private void onGotCurrentUser() {
         School.Position curPos = current.getSchoolPosition();
         if(curPos != School.Position.Guest){
             Fragment fr = null;
             if(curPos == School.Position.Student){
-                fr = StudentFragment.newInstance(current.getParticipantId());
+                fr = StudentFragment.newInstance(current);
             }
             else if(curPos == School.Position.Teacher){
-//                fr = TeacherFragment.newInstance(oldSchool.toJson(),
-//                        JSONable.toJSON(current));
+                fr = TeacherFragment.newInstance(current, school);
             }
-            //if(fr != null)
-                //changeFragment(fr);
+            if(fr != null)
+                changeFragment(fr);
         }
         //initSideBar();192.168.177.179
     }
 
     private void initSideBar() {
-//        binding.toolbar.setSubtitle("Navigation toolbar");
-//        setSupportActionBar(binding.toolbar);
+        //binding.toolbar.setSubtitle("Navigation toolbar");
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        binding.exitProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoff();
+
+            }
+        });
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open, R.string.close);
 //        binding.drawerLayout.addDrawerListener(toggle);
 //        //binding.navigation.getMenu().addSubMenu("Успеваемость").add(GO_TO_MARKS).setIcon(R.drawable.baseline_looks_5_24);
@@ -119,6 +122,20 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //        toggle.syncState();
+    }
+
+    private void logoff() {
+
+        Intent restart = new Intent(MainActivity.this, LoginActivity.class);
+        restart.putExtra("LOGOFF", true);
+        startActivity(restart);
+        finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

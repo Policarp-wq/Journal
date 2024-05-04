@@ -27,4 +27,7 @@ public class School {
         ICT,
         PE
     }
+    public static boolean isMarkCorrect(int mark){
+        return mark > 0 && mark < 6;
+    }
 }

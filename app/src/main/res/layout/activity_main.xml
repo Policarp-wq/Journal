@@ -8,8 +8,7 @@
     tools:openDrawer="start"
     tools:context=".MainActivity"
     android:id="@+id/drawer_layout">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,8 +16,10 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <LinearLayout
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/white"/>
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -35,25 +36,28 @@
                 android:id="@+id/exitProfile"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+
                 android:layout_gravity="right"
                 android:background="@drawable/baseline_exit_to_app_24" />
-            <ImageButton
-                android:id="@+id/deleteData"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="left"
-                android:background="@drawable/baseline_delete_forever_24" />
 
-        </LinearLayout>
+        </RelativeLayout>
         <TextView
             android:id="@+id/Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="26sp"/>
-        <FrameLayout
-            android:id="@+id/placeHolder"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/placeHolder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

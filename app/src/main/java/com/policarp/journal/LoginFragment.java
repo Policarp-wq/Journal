@@ -1,14 +1,12 @@
 package com.policarp.journal;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.policarp.journal.database.CustomCallBack;
 import com.policarp.journal.database.RequestError;
@@ -17,17 +15,12 @@ import com.policarp.journal.database.UserApi;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
 import com.policarp.journal.database.response.entities.UserEntity;
 import com.policarp.journal.databinding.FragmentLoginBinding;
-import com.policarp.journal.models.UserInfo;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends FragmentDataSender {
     FragmentLoginBinding binding;
     OnDataSendListener listener;
     private UserApi userApi;
+    public static String PARTICIPANTID = "PARTICIPANTID";
     public LoginFragment() {
     }
 
@@ -36,13 +29,13 @@ public class LoginFragment extends FragmentDataSender {
         fragment.listener = listener;
         return fragment;
     }
-    void showToast(String msg){
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userApi = ServerAPI.getInstance().getUserApi();
+        Long authId = checkAuth();
+        if(authId != -1)
+            login(authId);
     }
 
     @Override
@@ -50,7 +43,6 @@ public class LoginFragment extends FragmentDataSender {
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         binding.enter.setOnClickListener(v -> {
-
             UserEntity u = new UserEntity(binding.login.getText().toString(),
                     binding.password.getText().toString());
             tryLogin(u);
@@ -61,11 +53,9 @@ public class LoginFragment extends FragmentDataSender {
     private void tryLogin(UserEntity u) {
         CustomCallBack<SchoolParticipantEntity> callBack = new CustomCallBack<>(
                 (call, response) -> {
-                    if(listener == null)
-                        return;
-                    Message msg = new Message();
-                    msg.obj = response.body().getParticipantId();
-                    listener.sendMessage(msg);
+                    if(binding.rememberAuth.isChecked())
+                        saveAuth(response.body().getParticipantId());
+                    login(response.body().getParticipantId());
                 },
                 (c, r) ->{
                     showToast(RequestError.handleBadResponse(r));
@@ -73,5 +63,27 @@ public class LoginFragment extends FragmentDataSender {
                 null
         );
         userApi.authUser(u).enqueue(callBack);
+    }
+
+    private void login(Long participantId){
+        if(listener == null)
+            return;
+        Message msg = new Message();
+        msg.obj = participantId;
+        listener.sendMessage(msg);
+    }
+
+    private Long checkAuth(){
+        return getActivity()
+                .getPreferences(Context.MODE_PRIVATE)
+                .getLong(PARTICIPANTID, -1);
+    }
+
+    private void saveAuth(Long participantId) {
+        getActivity()
+                .getPreferences(Context.MODE_PRIVATE)
+                .edit()
+                .putLong(PARTICIPANTID, participantId)
+                .apply();
     }
 }

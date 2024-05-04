@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class StudentEntity {
-    private Integer studentId;
-    private Integer participantId;
-    private Integer attachedClassId;
+    private Long studentId;
+    private Long participantId;
+    private Long attachedClassId;
     @Override
     public String toString() {
         return "Student{" +
