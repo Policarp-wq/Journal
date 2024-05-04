@@ -1,6 +1,5 @@
 package com.policarp.journal.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.policarp.journal.R;
 import com.policarp.journal.database.response.entities.LearningClassEntity;
 import com.policarp.journal.databinding.OneLearningClassBinding;
-import com.policarp.journal.models.LearningClass;
 
 import java.util.ArrayList;
 

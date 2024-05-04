@@ -3,8 +3,6 @@ package com.policarp.journal.database;
 import com.policarp.journal.database.response.entities.LearningClassEntity;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.List;
 
 import retrofit2.Call;

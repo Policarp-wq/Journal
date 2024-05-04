@@ -1,34 +1,23 @@
 package com.policarp.journal;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.policarp.journal.database.response.entities.SchoolEntity;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
-import com.policarp.journal.database.response.entities.StudentEntity;
 import com.policarp.journal.databinding.StudentInfoDialogBinding;
 import com.policarp.journal.models.School;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class StudentInfoDialog extends DialogFragment{
     StudentInfoDialogBinding binding;
     private SchoolParticipantEntity student;
-    public static interface MarkConfirm{
+    public interface MarkConfirm{
         void onMarkConfirm(int mark);
     }
     private MarkConfirm listener;
@@ -53,7 +42,7 @@ public class StudentInfoDialog extends DialogFragment{
                     Toast.makeText(getContext(), "Оценка не поставлена!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int mark = Integer.valueOf(binding.settedMark.getText().toString());
+                int mark = Integer.parseInt(binding.settedMark.getText().toString());
                 if(!School.isMarkCorrect(mark)){
                     Toast.makeText(getContext(), "Некорректная оценка!", Toast.LENGTH_SHORT).show();
                     return;

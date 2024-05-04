@@ -5,15 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.policarp.journal.adapters.LearningClassesAdapter;
@@ -26,10 +21,6 @@ import com.policarp.journal.database.response.entities.SchoolEntity;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
 import com.policarp.journal.database.response.entities.TeacherEntity;
 import com.policarp.journal.databinding.TeacherFragmentBinding;
-import com.policarp.journal.models.LearningClass;
-import com.policarp.journal.models.JSONable;
-import com.policarp.journal.models.OldSchool;
-import com.policarp.journal.models.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
