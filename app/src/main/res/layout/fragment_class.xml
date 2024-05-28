@@ -18,11 +18,12 @@
                 android:layout_height="match_parent"
                 android:textSize="20sp"
                 android:text="Предмет:"/>
-            <Spinner
-                android:id="@+id/subjectSelector"
+            <TextView
+                android:id="@+id/selectedSubject"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp"
                 />
         </LinearLayout>
         <TextView

@@ -1,7 +1,7 @@
 package com.policarp.journal.database;
 
 import com.policarp.journal.database.response.entities.LearningClassEntity;
-import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
+import com.policarp.journal.database.response.entities.ParticipantStudentEntity;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface LearningClassApi {
     @GET("classes/school/{id}/name/{name}")
     Call<LearningClassEntity> getClassInSchoolByName(@Path("id") Long schoolId, @Path("name") String className);
     @GET("/classes/{class_id}/participants")
-    Call<List<SchoolParticipantEntity>> getClassParticipants(@Path("class_id") Long classId);
+    Call<List<ParticipantStudentEntity>> getClassParticipantStudents(@Path("class_id") Long classId);
     @POST("/classes")
     Call<LearningClassEntity> addClass(@Body LearningClassEntity learningClass);
     @DELETE("/classes")

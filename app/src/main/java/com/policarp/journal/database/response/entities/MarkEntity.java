@@ -1,5 +1,7 @@
 package com.policarp.journal.database.response.entities;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +15,9 @@ public class MarkEntity {
     private Integer val;
     private Long studentId;
     private Long teacherId;
-    private String markDate;
+    private Date markDate;
 
-    public MarkEntity(String subjectName, Integer val, Long studentId, Long teacherId, String markDate) {
+    public MarkEntity(String subjectName, Integer val, Long studentId, Long teacherId, Date markDate) {
         this.subjectName = subjectName;
         this.val = val;
         this.studentId = studentId;

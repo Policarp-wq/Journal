@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.policarp.journal"
-        minSdk = 29
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -58,5 +58,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.google.android.material:material:1.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.android.material:material:1.12.0")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }

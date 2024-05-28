@@ -33,9 +33,9 @@ public class LoginFragment extends FragmentDataSender {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userApi = ServerAPI.getInstance().getUserApi();
-        Long authId = checkAuth();
-        if(authId != -1)
-            login(authId);
+        Long participantId = checkAuth();
+        if(participantId != -1)
+            login(participantId);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class LoginFragment extends FragmentDataSender {
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         binding.enter.setOnClickListener(v -> {
-            UserEntity u = new UserEntity(binding.login.getText().toString(),
-                    binding.password.getText().toString());
+            UserEntity u = new UserEntity(binding.login.getText().toString().trim(),
+                    binding.password.getText().toString().trim());
             tryLogin(u);
 
         });

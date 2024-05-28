@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +22,10 @@ import com.policarp.journal.database.response.entities.SchoolEntity;
 import com.policarp.journal.database.response.entities.SchoolParticipantEntity;
 import com.policarp.journal.database.response.entities.TeacherEntity;
 import com.policarp.journal.databinding.TeacherFragmentBinding;
+import com.policarp.journal.models.School;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TeacherFragment extends FragmentDataSender{
@@ -44,13 +47,6 @@ public class TeacherFragment extends FragmentDataSender{
         super.onCreate(savedInstanceState);
         learningClassApi = ServerAPI.getInstance().getLearningClassApi();
         teacherApi = ServerAPI.getInstance().getTeacherApi();
-        CustomCallBack<TeacherEntity> getTeacher = new CustomCallBack<>(
-                (c, r)->{
-                    teacher = r.body();
-                    Log.i(MainActivity.APPTAG, "Got teacher with id" + teacher.getTeacherId());
-                },null, null
-        );
-        teacherApi.getTeacherByParticipantId(participant.getParticipantId()).enqueue(getTeacher);
     }
 
     @Nullable
@@ -58,11 +54,20 @@ public class TeacherFragment extends FragmentDataSender{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         TeacherFragmentBinding binding = TeacherFragmentBinding.inflate(inflater, container, false);
         FragmentManager fm = getParentFragmentManager();
+        // TODO: Specify for class
+        ArrayList<School.Subjects> subjects = new ArrayList<>(Arrays.asList(School.Subjects.values()));
+        ArrayAdapter<School.Subjects> subjAdapter = new ArrayAdapter<>(
+                getContext(), android.R.layout.simple_spinner_item, subjects);
+        subjAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.subjectSelector.setAdapter(subjAdapter);
         CustomCallBack<List<LearningClassEntity>> callBack = new CustomCallBack<>(
                 (c, r)->{
                     adapter = new LearningClassesAdapter(new ArrayList<>(r.body()), (cl) ->{
                         Log.i(MainActivity.APPTAG, "Selected class " + cl.getClassName());
-                        ClassFragment classFragment = ClassFragment.newInstance(cl.getClassId(), teacher);
+                        if(teacher == null)
+                            return;
+                        ClassFragment classFragment = ClassFragment.newInstance(cl.getClassId(), teacher,
+                                ((School.Subjects) binding.subjectSelector.getSelectedItem()));
                         fm.beginTransaction()
                                 .replace(R.id.placeHolder, classFragment)
                                 .addToBackStack("teacher")
@@ -73,8 +78,14 @@ public class TeacherFragment extends FragmentDataSender{
                     binding.availableClasses.setLayoutManager(new LinearLayoutManager(getContext()));
                 },null,null
         );
-        learningClassApi.getSchoolClasses(school.getSchoolId()).enqueue(callBack);
-
+        CustomCallBack<TeacherEntity> getTeacher = new CustomCallBack<>(
+                (c, r)->{
+                    teacher = r.body();
+                    learningClassApi.getSchoolClasses(school.getSchoolId()).enqueue(callBack);
+                    Log.i(MainActivity.APPTAG, "Got teacher with id" + teacher.getTeacherId());
+                },null, null
+        );
+        teacherApi.getTeacherByParticipantId(participant.getParticipantId()).enqueue(getTeacher);
         return binding.getRoot();
     }
 }

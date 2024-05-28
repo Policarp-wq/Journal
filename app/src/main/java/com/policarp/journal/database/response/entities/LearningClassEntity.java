@@ -10,13 +10,9 @@ import lombok.Setter;
 public class LearningClassEntity {
     private Long classId;
     private String className;
-    private Integer schoolId;
+    private Long schoolId;
     @Override
     public String toString() {
-        return "Class{" +
-                "id=" + classId +
-                ", className='" + className + '\'' +
-                ", schoolId=" + schoolId +
-                '}';
+        return className;
     }
 }

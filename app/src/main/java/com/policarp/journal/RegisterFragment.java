@@ -164,8 +164,8 @@ public class RegisterFragment extends FragmentDataSender {
         String selectedPos = (String) binding.roleSelector.getSelectedItem();
         //SchoolEntity school = (SchoolEntity)binding.schoolSelector.getSelectedItem();
         SchoolEntity school = selectedSchool;
-        String login = binding.login.getText().toString();
-        String password = binding.password.getText().toString();
+        String login = binding.login.getText().toString().trim();
+        String password = binding.password.getText().toString().trim();
         String fullName = binding.fullname.getText().toString();
         UserEntity user = new UserEntity();
         user.setLogin(login);
@@ -208,7 +208,8 @@ public class RegisterFragment extends FragmentDataSender {
     private void registerParticipant(Account account) {
         CustomCallBack<SchoolParticipantEntity> callBack = new CustomCallBack<>(
                 (c, r)->{
-                    showToast("Registered new participant" + r.body().getName() + "with user" + account.user.getLogin());
+                    //showToast("Registered new participant" + r.body().getName() + "with user" + account.user.getLogin());
+                    showToast("Зарегистрирован!");
                     Message msg = new Message();
                     msg.obj = r.body().getParticipantId();
                     listener.sendMessage(msg);

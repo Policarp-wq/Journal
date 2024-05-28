@@ -8,13 +8,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.policarp.journal.database.CustomCallBack;
+import com.policarp.journal.database.RequestError;
+import com.policarp.journal.database.ServerAPI;
 import com.policarp.journal.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     private boolean isLogin = true;
     private ActivityLoginBinding binding;
     public static final String LOGINEDPARTICIPANTID = "USER";
-    public static final String SCHOOLID = "SCHOOL";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +28,29 @@ public class LoginActivity extends AppCompatActivity {
             else loginFragmentSelect();
         });
         if(getIntent().getBooleanExtra("LOGOFF", false)){
-            getPreferences(Context.MODE_PRIVATE).edit().remove(LoginFragment.PARTICIPANTID).apply();
+            removeSavedAuth();
         }
         loginFragmentSelect();
     }
-
+    void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+    private void removeSavedAuth(){
+        getPreferences(Context.MODE_PRIVATE).edit().remove(LoginFragment.PARTICIPANTID).apply();
+    }
     private void loginFragmentSelect(){
-        LoginFragment frag = LoginFragment.newInstance((m) -> login((Long)m.obj));
+        LoginFragment frag = LoginFragment.newInstance((m) ->{
+            Long participantId = (Long)m.obj;
+            //Проверка id
+            ServerAPI.getInstance()
+                    .getSchoolParticipantApi()
+                    .getById(participantId)
+                    .enqueue(new CustomCallBack<>(
+                            (c, r)->login(participantId),
+                            (c, r)->removeSavedAuth(),
+                            (c, t)->showToast(RequestError.handleFailResponse(c, t))
+                    ));
+        });
         getSupportFragmentManager().beginTransaction().replace(binding.frame.getId(), frag).commit();
         binding.change.setText("Регистрация");
         isLogin = true;
@@ -53,15 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         main.putExtra(LOGINEDPARTICIPANTID, participantId);
         startActivity(main);
         finish();
-    }
-    static class LoginInfo{
-        public LoginInfo(Long participantId, Long schoolId) {
-            this.participantId = participantId;
-            this.schoolId = schoolId;
-        }
-
-        public Long participantId;
-        public Long schoolId;
     }
 
 }

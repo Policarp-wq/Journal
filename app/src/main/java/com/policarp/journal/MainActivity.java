@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 
 import com.policarp.journal.database.CustomCallBack;
+import com.policarp.journal.database.RequestError;
 import com.policarp.journal.database.SchoolApi;
 import com.policarp.journal.database.SchoolParticipantApi;
 import com.policarp.journal.database.ServerAPI;
@@ -58,14 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 (c, r)->{
                     current = r.body();
                     schoolApi.getSchoolById(current.getSchoolId()).enqueue(schoolCallBack);
-                    binding.Name.setText(current.getName());
+                    binding.Name.setText(current.getPosition() + " " + current.getName());
                 },
-                null,null
+                (c, r)->showToast(RequestError.handleBadResponse(r) + " \nПопробуйте выйти из аккаунта и зайти заново")
+                ,(c, r)->showToast("Не удалось подключиться к серверу ;(")
         );
         participantApi.getById(participantId).enqueue(callBack);
         fm = getSupportFragmentManager();
         initSideBar();
-        //navController = Navigation.findNavController(this, R.id.fragmentContainerView);
     }
     void showToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(curPos == School.Position.Teacher){
                 fr = TeacherFragment.newInstance(current, school);
+            }
+            else if(curPos == School.Position.Principal){
+                fr = PrincipalFragment.newInstance(school);
             }
             if(fr != null)
                 changeFragment(fr);
@@ -98,17 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open, R.string.close);
-//        binding.drawerLayout.addDrawerListener(toggle);
-//        //binding.navigation.getMenu().addSubMenu("Успеваемость").add(GO_TO_MARKS).setIcon(R.drawable.baseline_looks_5_24);
-//        binding.navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                Toast.makeText(MainActivity.this, "ДА иди ты нахуй блять", Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
-//        toggle.syncState();
     }
 
     private void logoff() {

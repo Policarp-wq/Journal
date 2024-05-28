@@ -1,13 +1,16 @@
 package com.policarp.journal.database;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import lombok.Getter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServerAPI {
     public static final String REQUESTTAG = "REQUEST";
-    public static final String BASEURL = "http://192.168.3.5:8080";
-    //public static final String BASEURL = "http://192.168.177.179:8080";
+   // public static final String BASEURL = "http://localhost:8080";
+    public static final String BASEURL = "http://192.168.136.179:8080";
     private static ServerAPI server;
     @Getter
     private final SchoolApi schoolApi;
@@ -25,10 +28,16 @@ public class ServerAPI {
     private final TeacherApi teacherApi;
     private final Retrofit retrofit;
     private ServerAPI(){
+        //Deserializer creation
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .setDateFormat("yyyy-MM-dd HH:mm")
+                .create();
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASEURL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+        //APIs init
         schoolApi = retrofit.create(SchoolApi.class);
         userApi = retrofit.create(UserApi.class);
         schoolParticipantApi = retrofit.create(SchoolParticipantApi.class);
